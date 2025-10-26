@@ -1,0 +1,626 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Dudi Venkata Sai Koushik - Portfolio</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: #f4f4f4;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+            color: white;
+            padding: 80px 0;
+            text-align: center;
+        }
+
+        header h1 { font-size: 2.5em; margin-bottom: 10px; }
+        header p { font-size: 1.2em; opacity: 0.9; }
+
+        nav {
+            background: white;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        nav ul { list-style: none; display: flex; justify-content: center; flex-wrap: wrap; }
+        nav ul li { margin: 0; }
+        nav ul li a {
+            display: block;
+            padding: 15px 25px;
+            text-decoration: none;
+            color: #333;
+            transition: background 0.3s;
+        }
+        nav ul li a:hover { background: #2c5364; color: white; }
+
+        section {
+            background: white;
+            margin: 30px auto;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        section h2 {
+            color: #2c5364;
+            margin-bottom: 20px;
+            font-size: 2em;
+            border-bottom: 3px solid #2c5364;
+            padding-bottom: 10px;
+        }
+
+        .about-content { text-align: justify; line-height: 1.8; }
+
+        .project-card {
+            background: #f9f9f9;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-radius: 8px;
+            border-left: 4px solid #2c5364;
+        }
+
+        .project-card h3 { color: #203a43; margin-bottom: 15px; }
+        .project-card ul { margin-left: 20px; margin-top: 10px; }
+
+        .tech-stack { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 15px; }
+        .tech-badge {
+            background: #2c5364;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+        }
+
+        .links { margin-top: 20px; }
+        .links a {
+            display: inline-block;
+            background: #203a43;
+            color: white;
+            padding: 10px 20px;
+            margin: 5px;
+            text-decoration: none;
+            border-radius: 5px;
+            transition: background 0.3s;
+        }
+        .links a:hover { background: #2c5364; }
+
+        .certificate-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .certificate-header h3 { margin: 0; flex: 1; }
+
+        .view-cert-btn {
+            background: #667eea;
+            color: white;
+            padding: 8px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: background 0.3s;
+            white-space: nowrap;
+        }
+        .view-cert-btn:hover { background: #764ba2; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0; top: 0;
+            width: 100%; height: 100%;
+            background-color: rgba(0,0,0,0.9);
+        }
+
+        .modal-content {
+            margin: auto;
+            display: block;
+            max-width: 90%;
+            max-height: 90%;
+            position: absolute;
+            top: 50%; left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .close-modal {
+            position: absolute;
+            top: 20px;
+            right: 35px;
+            color: #f1f1f1;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .close-modal:hover { color: #667eea; }
+
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .skill-item {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .skill-item h4 { color: #764ba2; margin-bottom: 10px; }
+
+        .hackerrank-problems {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .problem-category {
+            background: #f9f9f9;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .problem-category h4 { color: #764ba2; margin-bottom: 10px; }
+
+        .problem-category ul { margin-left: 0; list-style: none; padding: 0; }
+
+        /* Improved list item layout: left (title) and right (buttons) */
+        .problem-category li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 12px;
+            margin: 10px 0;
+            flex-wrap: wrap;
+        }
+
+        .item-left { flex: 1 1 auto; min-width: 0; } /* lets the title truncate if needed */
+        .item-right { display: flex; gap: 10px; flex: 0 0 auto; }
+
+        /* Ensure small buttons have consistent size */
+        .small-btn {
+            padding: 5px 12px;
+            font-size: 0.85em;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            background: #667eea;
+            color: white;
+        }
+        .small-btn:hover { background: #764ba2; }
+
+        footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            margin-top: 40px;
+        }
+
+        .badge {
+            background: #4CAF50;
+            color: white;
+            padding: 3px 10px;
+            border-radius: 3px;
+            font-size: 0.85em;
+            margin-left: 10px;
+        }
+
+        @media (max-width: 520px) {
+            .item-right { width: 100%; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1>DUDI VENKATA SAI KOUSHIK</h1>
+            <p>Computer Science & Engineering Student</p>
+            <p>SRM Institute of Science and Technology</p>
+            <p style="margin-top: 10px; font-size: 0.9em;">Register Number: RA2411003010270</p>
+        </div>
+    </header>
+
+    <nav>
+        <ul>
+            <li><a href="#about">About Me</a></li>
+            <li><a href="#projects">Projects</a></li>
+            <li><a href="#skills">Skills</a></li>
+            <li><a href="#github">GitHub</a></li>
+            <li><a href="#achievements">Achievements</a></li>
+            <li><a href="#hackerrank">HackerRank</a></li>
+            <li><a href="#ecurricula">E-Curricula</a></li>
+        </ul>
+    </nav>
+
+    <div class="container">
+        <section id="about">
+            <h2>About Me</h2>
+            <div class="about-content">
+                <p>I am Koushik, a dedicated and enthusiastic Computer Science and Engineering student at SRM Institute of Science and Technology, Kattankulathur. My journey in computer science began with a curiosity about how technology shapes the world around us, and over time, that curiosity has evolved into a deep passion for programming, problem-solving, and software development.</p>
+
+                <p style="margin-top: 15px;">Throughout my academic journey, I have consistently focused on building a strong technical foundation by learning and exploring data structures, algorithms, computer networks, databases, and operating systems. I enjoy tackling challenging problems that require analytical thinking, and I believe that consistent practice and logical reasoning are key to mastering programming.</p>
+
+                <p style="margin-top: 15px;">My preferred programming languages include C, C++, Java, and Python, and I am constantly enhancing my coding skills through platforms like LeetCode, HackerRank, and Codeforces. This constant exposure to real-world problems has strengthened my understanding of computational thinking and efficient code design.</p>
+
+                <p style="margin-top: 15px;">My long-term goal is to build a career in software engineering, where I can combine my technical expertise and innovative mindset to design scalable, impactful, and user-centric applications. I see myself as a curious learner, a problem solver, and a technology enthusiast, determined to keep learning, experimenting, and evolving with every new challenge.</p>
+            </div>
+        </section>
+
+        <section id="projects">
+            <h2>Projects</h2>
+
+            <div class="project-card">
+                <h3>1. Train Ticket Reservation System</h3>
+                <p>A comprehensive Java-based web application that simulates an online railway reservation platform with user and admin modules.</p>
+
+                <h4 style="margin-top: 15px; color: #333;">Key Features:</h4>
+                <ul>
+                    <li><strong>User Module:</strong> Registration, login, train search, ticket booking, booking history, and profile management</li>
+                    <li><strong>Admin Module:</strong> Train management (add, update, delete), view all trains, and profile management</li>
+                    <li><strong>Database:</strong> Oracle SQL with JDBC for data operations</li>
+                </ul>
+
+                <div class="tech-stack">
+                    <span class="tech-badge">Java</span>
+                    <span class="tech-badge">JSP</span>
+                    <span class="tech-badge">Servlets</span>
+                    <span class="tech-badge">HTML/CSS</span>
+                    <span class="tech-badge">Bootstrap</span>
+                    <span class="tech-badge">Oracle SQL</span>
+                    <span class="tech-badge">JDBC</span>
+                    <span class="tech-badge">Apache Maven</span>
+                    <span class="tech-badge">Apache Tomcat</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>2. Age Calculator</h3>
+                <p>A simple web application that computes a person's exact age based on their date of birth, displaying years, months, and days elapsed.</p>
+
+                <h4 style="margin-top: 15px; color: #333;">Key Features:</h4>
+                <ul>
+                    <li>Date of birth input via form field</li>
+                    <li>Real-time age calculation (years, months, days)</li>
+                    <li>Responsive design for desktop and mobile</li>
+                    <li>Client-side execution with no backend required</li>
+                </ul>
+
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML</span>
+                    <span class="tech-badge">CSS</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+            </div>
+
+            <div class="project-card">
+                <h3>3. BMI Calculator</h3>
+                <p>A lightweight web application designed to calculate Body Mass Index (BMI) quickly and display health categories.</p>
+
+                <h4 style="margin-top: 15px; color: #333;">Key Features:</h4>
+                <ul>
+                    <li>User inputs weight and height</li>
+                    <li>Automatic BMI calculation with formula: BMI = weight / (height²)</li>
+                    <li>Display of result with category label</li>
+                    <li>Browser-based execution, works offline</li>
+                </ul>
+
+                <div class="tech-stack">
+                    <span class="tech-badge">HTML</span>
+                    <span class="tech-badge">CSS</span>
+                    <span class="tech-badge">JavaScript</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="skills">
+            <h2>Skills & Technologies</h2>
+            <div class="skills-grid">
+                <div class="skill-item"><h4>Programming Languages</h4><p>C, C++, Java, Python</p></div>
+                <div class="skill-item"><h4>Web Technologies</h4><p>HTML, CSS, JavaScript, JSP, Servlets</p></div>
+                <div class="skill-item"><h4>Frameworks & Tools</h4><p>Bootstrap, Apache Maven, Apache Tomcat</p></div>
+                <div class="skill-item"><h4>Databases</h4><p>Oracle SQL, JDBC</p></div>
+                <div class="skill-item"><h4>Core Concepts</h4><p>Data Structures, Algorithms, OOP</p></div>
+                <div class="skill-item"><h4>Platforms</h4><p>LeetCode, HackerRank, Codeforces</p></div>
+            </div>
+        </section>
+
+        <section id="github">
+            <h2>GitHub Repositories</h2>
+            <p style="margin-bottom: 20px;">Check out my projects on GitHub:</p>
+
+            <div class="links">
+                <a href="https://github.com/Koushik0906" target="_blank">📱 GitHub Profile</a>
+                <a href="https://github.com/Koushik0906/Train-Ticket-Reservation-System.git" target="_blank">🚂 Train Reservation System</a>
+                <a href="https://github.com/Koushik0906/Age-Calculator.git" target="_blank">📅 Age Calculator</a>
+                <a href="https://github.com/Koushik0906/BMI-calculator.git" target="_blank">⚖️ BMI Calculator</a>
+            </div>
+        </section>
+
+        <section id="achievements">
+            <h2>Certificates & Achievements</h2>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>🏆 NPTEL Elite - Fundamentals of Object Oriented Programming</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert1')">View Certificate</button>
+                </div>
+                <p><strong>Score:</strong> 79% (Consolidated Score)</p>
+                <p><strong>Institution:</strong> IIT Roorkee | Jan-Apr 2025 (12 week course)</p>
+                <p><strong>Details:</strong> Online Assignments: 24.69/25 | Proctored Exam: 54/75</p>
+                <p style="margin-top: 8px; color: #666;">Total candidates certified: 5246 | Credits recommended: 3 or 4</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>🤖 Generative AI Virtual Internship</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert3')">View Certificate</button>
+                </div>
+                <p><strong>Duration:</strong> 10 weeks (Oct - Dec 2024)</p>
+                <p><strong>Organization:</strong> National Internship Portal, AICTE, EduSkills</p>
+                <p><strong>Curriculum:</strong> Google Cloud</p>
+                <p>Successfully completed comprehensive training in Generative AI technologies and applications.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>💡 Smart India Hackathon - Internal Edition</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert2')">View Certificate</button>
+                </div>
+                <p><strong>Date:</strong> 15th - 17th September 2025</p>
+                <p><strong>Organization:</strong> Directorate of Entrepreneurship & Innovation, SRM Institute of Science and Technology</p>
+                <p>Participated in the internal edition of India's largest hackathon focusing on innovative problem-solving.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>🌌 Hack the Cosmos Hackathon</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert4')">View Certificate</button>
+                </div>
+                <p><strong>Date:</strong> 21st - 22nd April 2025</p>
+                <p><strong>Organization:</strong> Computer Society of India SRM-KTR SB at SRMIST, Kattankulathur</p>
+                <p><strong>Powered by:</strong> Unstop</p>
+                <p>Participated in space and technology-themed hackathon focusing on innovative solutions.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>🤖 IoRT - Internet of Robotics Things Workshop</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert5')">View Certificate</button>
+                </div>
+                <p><strong>Duration:</strong> 2 days (3rd - 4th April 2025)</p>
+                <p><strong>Event:</strong> National Level Workshop - Technex'25, IIT Varanasi</p>
+                <p><strong>Organization:</strong> Innovians Technologies (India)</p>
+                <p><strong>Venue:</strong> SRM Institute of Science and Technology, Kattankulathur</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>💻 Web Development Workshop</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert6')">View Certificate</button>
+                </div>
+                <p><strong>Date:</strong> 10th February 2025</p>
+                <p><strong>Organization:</strong> SRM University ACM Student Chapter & Department of Computing Technologies</p>
+                <p><strong>Venue:</strong> Tech Park, SRMIST KTR</p>
+                <p>One day intensive workshop on modern web development practices and technologies.</p>
+            </div>
+
+            <div class="project-card">
+                <div class="certificate-header">
+                    <h3>🏃 Nexathon'25 Participation</h3>
+                    <button class="view-cert-btn" onclick="openModal('cert7')">View Certificate</button>
+                </div>
+                <p><strong>Team:</strong> BUDGET WARRIORS</p>
+                <p><strong>Organization:</strong> KCG College of Technology, Chennai</p>
+                <p><strong>Campus:</strong> SRM KTR Chengalpattu, Tamil Nadu</p>
+                <p>Participated as part of a team in this competitive technology event.</p>
+            </div>
+        </section>
+
+        <section id="hackerrank">
+            <h2>HackerRank Problem Solving</h2>
+            <p style="margin-bottom: 20px;">Demonstrated problem-solving skills across multiple difficulty levels:</p>
+
+            <div class="hackerrank-problems">
+                <div class="problem-category" style="border-left: 4px solid #4CAF50;">
+                    <h4>✅ Easy Level</h4>
+                    <ul>
+                        <li>
+                            <div class="item-left">Java If-Else</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr1')">View Solution</button></div>
+                        </li>
+                        <li>
+                            <div class="item-left">Java Loops II</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr2')">View Solution</button></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="problem-category" style="border-left: 4px solid #FF9800;">
+                    <h4>⚡ Medium Level</h4>
+                    <ul>
+                        <li>
+                            <div class="item-left">Java Regex</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr3')">View Solution</button></div>
+                        </li>
+                        <li>
+                            <div class="item-left">Tag Content Extractor</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr4')">View Solution</button></div>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="problem-category" style="border-left: 4px solid #F44336;">
+                    <h4>🔥 Hard Level</h4>
+                    <ul>
+                        <li>
+                            <div class="item-left">Validating Postal Codes</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr5')">View Solution</button></div>
+                        </li>
+                        <li>
+                            <div class="item-left">Matrix Script</div>
+                            <div class="item-right"><button class="small-btn" onclick="openModal('hr6')">View Solution</button></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="ecurricula">
+            <h2>E-Curricula Progress</h2>
+            <p style="margin-bottom: 20px;">Track my learning journey through various online courses and certifications:</p>
+
+            <div class="project-card" style="text-align: center;">
+                <h3>📚 E-Curricula Completion Status</h3>
+                <p style="margin: 20px 0;">View detailed progress across all completed and ongoing courses.</p>
+                <!-- Fixed: open the modal (modal id is ecurriculaModal) -->
+                <button class="view-cert-btn" onclick="openModal('ecurriculaModal')">View Progress Dashboard</button>
+            </div>
+        </section>
+    </div>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Dudi Venkata Sai Koushik. All rights reserved.</p>
+            <p style="margin-top: 10px;">SRM Institute of Science and Technology, Kattankulathur</p>
+            <p style="margin-top: 5px; font-size: 0.9em;">Course: 21CSC203P - Advanced Programming Practice</p>
+        </div>
+    </footer>
+
+    <!-- Certificate Modals -->
+    <div id="cert1" class="modal" onclick="closeModal('cert1')">
+        <span class="close-modal" onclick="closeModal('cert1')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1DJjwJAT7VNFhK-tmQ2dSNFtWUBuvMneZ" alt="NPTEL Certificate">
+    </div>
+
+    <div id="cert2" class="modal" onclick="closeModal('cert2')">
+        <span class="close-modal" onclick="closeModal('cert2')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1SC89_iXPKpYlatl7KTNb4rgC5MHqvMXa" alt="Smart India Hackathon Certificate">
+    </div>
+
+    <div id="cert3" class="modal" onclick="closeModal('cert3')">
+        <span class="close-modal" onclick="closeModal('cert3')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1saLYo9lhSSDp3XEygT29cPsETbcMFDaO" alt="Generative AI Internship Certificate">
+    </div>
+
+    <div id="cert4" class="modal" onclick="closeModal('cert4')">
+        <span class="close-modal" onclick="closeModal('cert4')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1ThKU3P3h7CK8B5EEic3UQ22WHK3SK6t4" alt="Hack the Cosmos Certificate">
+    </div>
+
+    <div id="cert5" class="modal" onclick="closeModal('cert5')">
+        <span class="close-modal" onclick="closeModal('cert5')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1rYl6DVqlrzD1iYpqqLRZPtRd6hB3rcPt" alt="IoRT Workshop Certificate">
+    </div>
+
+    <div id="cert6" class="modal" onclick="closeModal('cert6')">
+        <span class="close-modal" onclick="closeModal('cert6')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1vFN2QGSe6JxIPq9ONCgvTHiuFwHV2Ut0" alt="Web Development Workshop Certificate">
+    </div>
+
+    <div id="cert7" class="modal" onclick="closeModal('cert7')">
+        <span class="close-modal" onclick="closeModal('cert7')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1SC89_iXPKpYlatl7KTNb4rgC5MHqvMXa" alt="Nexathon Certificate">
+    </div>
+
+    <!-- HackerRank Solution Modals -->
+    <div id="hr1" class="modal" onclick="closeModal('hr1')">
+        <span class="close-modal" onclick="closeModal('hr1')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1qhuNFK5YQEZ_89VdZOBMDa0V7znQE2IH" alt="Java If-Else Solution">
+    </div>
+
+    <div id="hr2" class="modal" onclick="closeModal('hr2')">
+        <span class="close-modal" onclick="closeModal('hr2')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1QugBGEhfMMwdrJ5ULdeT4SM2uS99PF2i" alt="Java Loops II Solution">
+    </div>
+
+    <div id="hr3" class="modal" onclick="closeModal('hr3')">
+        <span class="close-modal" onclick="closeModal('hr3')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1q2rV2KdGIZM4mCEbN3tBpxqt-prCJp7c" alt="Java Regex Solution">
+    </div>
+
+    <div id="hr4" class="modal" onclick="closeModal('hr4')">
+        <span class="close-modal" onclick="closeModal('hr4')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1Stek_PObNPVbtZn-45QdQIiY6WU16y1a" alt="Tag Content Extractor Solution">
+    </div>
+
+    <div id="hr5" class="modal" onclick="closeModal('hr5')">
+        <span class="close-modal" onclick="closeModal('hr5')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1g9hAXszl04GvXQ9uB1ujJ_3HtvGJZ2TT" alt="Validating Postal Codes Solution">
+    </div>
+
+    <div id="hr6" class="modal" onclick="closeModal('hr6')">
+        <span class="close-modal" onclick="closeModal('hr6')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1e50p11uo5pD949fk1-zHUTXOQn_IyBYf" alt="Matrix Script Solution">
+    </div>
+
+    <!-- E-Curricula Modal (fixed id) -->
+    <div id="ecurriculaModal" class="modal" onclick="closeModal('ecurriculaModal')">
+        <span class="close-modal" onclick="closeModal('ecurriculaModal')">&times;</span>
+        <img class="modal-content" src="https://lh3.googleusercontent.com/d/1FWRvwwyN1c1jJhqpKUwyeXsAP9OgQBQ4" alt="E-Curricula Progress Dashboard">
+    </div>
+
+    <script>
+        function openModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (!el) {
+                console.warn('Modal not found:', modalId);
+                return;
+            }
+            el.style.display = "block";
+            document.body.style.overflow = "hidden"; // Prevent scrolling when modal is open
+        }
+
+        function closeModal(modalId) {
+            const el = document.getElementById(modalId);
+            if (!el) return;
+            el.style.display = "none";
+            document.body.style.overflow = "auto"; // Re-enable scrolling
+        }
+
+        // Prevent modal from closing when clicking on the image
+        document.addEventListener('DOMContentLoaded', function() {
+            const modalContents = document.querySelectorAll('.modal-content');
+            modalContents.forEach(content => {
+                content.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            });
+        });
+
+        // Close modal when pressing Escape key
+        document.addEventListener('keydown', function(event) {
+            if (event.key === "Escape") {
+                const modals = document.querySelectorAll('.modal');
+                modals.forEach(modal => {
+                    modal.style.display = "none";
+                });
+                document.body.style.overflow = "auto";
+            }
+        });
+    </script>
+</body>
+</html>
